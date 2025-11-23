@@ -63,6 +63,7 @@ export const MentorDigital = () => {
               msg.id === responseMessageId ? { ...msg, isTyping: false } : msg,
             ),
           );
+          scrollToBottom();
         }
       };
 
@@ -71,8 +72,10 @@ export const MentorDigital = () => {
   };
 
   useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
+    if (messages.length > 0) {
+      scrollToBottom();
+    }
+  }, [messages.length]);
 
   return (
     <div className="bg-white rounded-2xl shadow-lg p-4 sm:p-6 h-full flex flex-col animate-slideInRight max-w-4xl mx-auto">

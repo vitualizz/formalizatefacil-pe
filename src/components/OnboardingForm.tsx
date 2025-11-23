@@ -65,7 +65,6 @@ const OnboardingForm = () => {
 
   const handleNextStep = () => {
     if (currentStep === 1) {
-      console.log('raaa', formData, step1Validator.validate(formData));
       if (!step1Validator.validate(formData)) return;
     }
 
