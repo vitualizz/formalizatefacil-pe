@@ -14,5 +14,5 @@ export const useMerchantStore = create<MerchantStore>((set) => ({
   isRegistered: false,
   setIsRegistered: (isRegistered) => set({ isRegistered }),
   setMerchant: (merchant) => set({ merchant }),
-  clearMerchant: () => set({ merchant: null }),
+  clearMerchant: () => set({ merchant: null, isRegistered: false }),
 }))

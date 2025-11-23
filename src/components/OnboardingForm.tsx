@@ -4,29 +4,47 @@ import { useMerchantStore } from "@/stores/useMerchantStore";
 import { useFormValidation } from "@/hooks/useFormValidation";
 import {
   merchantSchema,
+  merchantStep1Schema,
+  merchantStep2Schema,
   type MerchantFormData,
 } from "@/domain/validation/merchantScheme";
 import { TextInput } from "./TextInput";
 import { SelectInput } from "./SelectInput";
 
 const DISTRICTS = [
-  'Huancayo', 'El Tambo', 'Chilca', 'Sapallanga', 'Concepción',
-  'Santa Rosa de Ocros', 'Chacabamba', 'San Agustín de Cajas', 'Pariahuanca', 'Huachac'
+  "Huancayo",
+  "El Tambo",
+  "Chilca",
+  "Sapallanga",
+  "Concepción",
+  "Santa Rosa de Ocros",
+  "Chacabamba",
+  "San Agustín de Cajas",
+  "Pariahuanca",
+  "Huachac",
 ];
 
 const BUSINESS_SECTORS = [
-  'Alimentos y Bebidas', 'Ropa y Textiles', 'Tecnología', 'Salud y Belleza',
-  'Construcción', 'Servicios Profesionales', 'Comercio al por Menor', 'Otro'
+  "Alimentos y Bebidas",
+  "Ropa y Textiles",
+  "Tecnología",
+  "Salud y Belleza",
+  "Construcción",
+  "Servicios Profesionales",
+  "Comercio al por Menor",
+  "Otro",
 ];
 
 const STEPS = [
-  { number: 1, label: 'Datos Personales' },
-  { number: 2, label: 'Negocio' }
+  { number: 1, label: "Datos Personales" },
+  { number: 2, label: "Negocio" },
 ];
 
 const OnboardingForm = () => {
   const { setMerchant, setIsRegistered } = useMerchantStore();
   const { errors, validate, clearError } = useFormValidation(merchantSchema);
+  const step1Validator = useFormValidation(merchantStep1Schema);
+  const step2Validator = useFormValidation(merchantStep2Schema);
   const [currentStep, setCurrentStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -46,10 +64,16 @@ const OnboardingForm = () => {
   };
 
   const handleNextStep = () => {
-    if (currentStep > 2) {
-      return;
+    if (currentStep === 1) {
+      console.log('raaa', formData, step1Validator.validate(formData));
+      if (!step1Validator.validate(formData)) return;
     }
-    setCurrentStep(currentStep + 1);
+
+    if (currentStep === 2) {
+      if (!step2Validator.validate(formData)) return;
+    }
+
+    setCurrentStep((s) => s + 1);
   };
 
   const handlePrevStep = () => {
@@ -64,7 +88,7 @@ const OnboardingForm = () => {
     if (validate(formData)) {
       setIsSubmitting(true);
       setMerchant(formData);
-      setTimeout(() => setIsRegistered(true), 2000);
+      setIsRegistered(true);
     }
   };
 
@@ -141,7 +165,7 @@ const OnboardingForm = () => {
                     label="Nombre completo"
                     value={formData.name}
                     onChange={(value) => handleChange("name", value)}
-                    error={errors.name}
+                    error={step1Validator.errors.name}
                     placeholder="Ej: Juan Pérez García"
                     icon="👤"
                   />
@@ -156,7 +180,7 @@ const OnboardingForm = () => {
                       { value: "DNI", label: "DNI (8 dígitos)" },
                       { value: "RUC", label: "RUC (11 dígitos)" },
                     ]}
-                    error={errors.documentType}
+                    error={step1Validator.errors.documentType}
                     icon="🆔"
                   />
 
@@ -164,7 +188,7 @@ const OnboardingForm = () => {
                     label="Número de Documento"
                     value={formData.document}
                     onChange={(value) => handleChange("document", value)}
-                    error={errors.document}
+                    error={step1Validator.errors.document}
                     placeholder={
                       formData.documentType === "DNI"
                         ? "12345678"
@@ -180,7 +204,7 @@ const OnboardingForm = () => {
               {currentStep === 2 && (
                 <div className="space-y-6 animate-fadeInUp">
                   <SelectInput
-                    label="occupation de negocio"
+                    label="Rubro de negocio"
                     value={formData.occupation}
                     onChange={(value) => handleChange("occupation", value)}
                     options={BUSINESS_SECTORS.map((sector) => ({
@@ -200,7 +224,7 @@ const OnboardingForm = () => {
                       value: district,
                       label: district,
                     }))}
-                    error={errors.distrito}
+                    error={errors.district}
                     placeholder="Selecciona tu distrito"
                     icon="📍"
                   />
@@ -246,7 +270,7 @@ const OnboardingForm = () => {
                   Atrás
                 </button>
               )}
-              {currentStep < 2 ? (
+              {currentStep < 2 && (
                 <button
                   type="button"
                   onClick={handleNextStep}
@@ -256,7 +280,8 @@ const OnboardingForm = () => {
                   Siguiente
                   <ChevronRight className="w-5 h-5" />
                 </button>
-              ) : (
+              )}
+              {currentStep === 2 && (
                 <button
                   type="submit"
                   disabled={isSubmitting}

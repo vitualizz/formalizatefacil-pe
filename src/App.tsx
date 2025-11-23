@@ -1,8 +1,13 @@
 import OnboardingForm from "./components/OnboardingForm"
+import { Dashboard } from "./components/Dashboard"
+import { useMerchantStore } from "@/stores/useMerchantStore";
 
 const App = () => {
+  const { isRegistered } = useMerchantStore();
   return (
-    <OnboardingForm />
+    <>
+      {isRegistered ? <Dashboard /> : <OnboardingForm />}
+    </>
   )
 }
 
