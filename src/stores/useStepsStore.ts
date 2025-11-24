@@ -8,7 +8,7 @@ interface StepsStore {
   resetFormalizationSteps: () => void
 }
 
-export const useStepsStore = create<StepsStore>((set, get) => ({
+export const useStepsStore = create<StepsStore>((set) => ({
   formalizationSteps: initialFormalizationSteps,
   toggleFormalizationStep: (stepId: string) => set((state) => ({
     formalizationSteps: state.formalizationSteps.map(step => {

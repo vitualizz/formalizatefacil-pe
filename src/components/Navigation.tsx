@@ -26,12 +26,13 @@ export const Navigation = ({
         <div className="flex justify-between items-center py-4">
           {/* Logo */}
           <div className="flex items-center gap-3">
-            <div className="bg-gradient-to-br from-blue-600 to-teal-600 p-2 rounded-lg">
-              <Store className="w-6 h-6 text-white" />
-            </div>
-            <h2 className="text-xl font-bold text-gray-900 hidden sm:block">
-              FormalízaTe
-            </h2>
+            {/* <div className="bg-gradient-to-br from-blue-600 to-teal-600 p-2 rounded-lg"> */}
+              {/* <Store className="w-6 h-6 text-white" /> */}
+            {/* </div> */}
+            <img src="https://www.elanet-se.org/wp-content/uploads/2020/11/logo-U-Continental.png" alt="logo" className="h-10" />
+            {/* <h2 className="text-xl font-bold text-gray-900 hidden sm:block"> */}
+              {/* FormalízaTe */}
+            {/* </h2> */}
           </div>
 
           {/* Desktop Navigation */}

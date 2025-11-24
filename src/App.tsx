@@ -2,6 +2,7 @@ import { useState } from "react";
 import OnboardingForm from "./components/OnboardingForm";
 import { Navigation } from "./components/Navigation";
 import { Dashboard } from "./components/Dashboard";
+import { Sales } from "./components/Sales";
 import { useMerchantStore } from "@/stores/useMerchantStore";
 import { Pages } from "./domain/entities/Pages";
 
@@ -27,6 +28,7 @@ const App = () => {
       />
       <main>
         {currentPage === Pages.Dashboard && <Dashboard />}
+        {currentPage === Pages.Sales && <Sales />}
       </main>
     </div>
   );
