@@ -87,14 +87,14 @@ export const SalesList = () => {
                     className="hover:bg-gray-50 transition-colors duration-200 animate-fadeInUp"
                     style={{ animationDelay: `${index * 50}ms` }}
                   >
-                    <td className="px-6 py-4 text-sm text-gray-600 font-medium">
+                    <td className="px-6 py-4 text-sm text-gray-600 font-medium whitespace-nowrap">
                       {formatDate(sale.date)}
                     </td>
-                    <td className="px-6 py-4 text-sm text-gray-900">{sale.description}</td>
-                    <td className="px-6 py-4 text-sm font-bold text-right text-blue-600">
+                    <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">{sale.description}</td>
+                    <td className="px-6 py-4 text-sm font-bold text-right text-blue-600 whitespace-nowrap">
                       {formatCurrency(sale.amount)}
                     </td>
-                    <td className="px-6 py-4 text-center">
+                    <td className="px-6 py-4 text-center whitespace-nowrap">
                       <button
                         onClick={() => deleteSale(sale.id)}
                         className="inline-flex items-center justify-center p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors duration-200 transform hover:scale-110 active:scale-95"
