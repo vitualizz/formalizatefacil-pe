@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { LayoutDashboard, TrendingUp, LogOut, Menu, X, Store } from 'lucide-react';
+import { LayoutDashboard, TrendingUp, LogOut, Menu, X } from 'lucide-react';
 import { Pages } from '@/domain/entities/Pages';
 
 interface NavigationProps {
