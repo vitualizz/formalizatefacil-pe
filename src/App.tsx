@@ -1,14 +1,35 @@
-import OnboardingForm from "./components/OnboardingForm"
-import { Dashboard } from "./components/Dashboard"
+import { useState } from "react";
+import OnboardingForm from "./components/OnboardingForm";
+import { Navigation } from "./components/Navigation";
+import { Dashboard } from "./components/Dashboard";
 import { useMerchantStore } from "@/stores/useMerchantStore";
+import { Pages } from "./domain/entities/Pages";
 
 const App = () => {
-  const { isRegistered } = useMerchantStore();
-  return (
-    <>
-      {isRegistered ? <Dashboard /> : <OnboardingForm />}
-    </>
-  )
-}
+  const { isRegistered, clearMerchant } = useMerchantStore();
+  const [currentPage, setCurrentPage] = useState<Pages>(Pages.Dashboard);
 
-export default App
+  const handleLogout = () => {
+    clearMerchant();
+    setCurrentPage(Pages.Dashboard);
+  };
+
+  if (!isRegistered) {
+    return <OnboardingForm />;
+  }
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-teal-50">
+      <Navigation
+        currentPage={currentPage}
+        onPageChange={setCurrentPage}
+        onLogout={handleLogout}
+      />
+      <main>
+        {currentPage === Pages.Dashboard && <Dashboard />}
+      </main>
+    </div>
+  );
+};
+
+export default App;

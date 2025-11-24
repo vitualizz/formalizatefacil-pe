@@ -1,10 +1,17 @@
 import { CheckCircle2, Circle, TrendingUp } from "lucide-react";
 import { useStepsStore } from "@/stores/useStepsStore";
+import { useMemo } from "react";
 
 export const FormalizationSteps = () => {
-  const { formalizationSteps, toggleFormalizationStep, getPercentCompleted } =
+  const { formalizationSteps, toggleFormalizationStep } =
     useStepsStore();
-  const percentage = getPercentCompleted();
+
+  const percentage = useMemo(() => {
+    const completedSteps = formalizationSteps.filter(
+      (step) => step.completed
+    ).length;
+    return Math.round((completedSteps / formalizationSteps.length) * 100);
+  }, [formalizationSteps]);
 
   return (
     <div className="bg-white rounded-xl shadow-lg p-6">

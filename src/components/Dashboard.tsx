@@ -1,48 +1,30 @@
-import { LogOut, Store } from "lucide-react";
 import { useMerchantStore } from "@/stores/useMerchantStore";
-import { useStepsStore } from "@/stores/useStepsStore";
 import { FormalizationSteps } from "./FormalizationSteps";
 import { MentorDigital } from "./MentorDigital";
 
 export const Dashboard = () => {
-  const { merchant, clearMerchant } = useMerchantStore();
-  const { resetFormalizationSteps } = useStepsStore();
+  const { merchant } = useMerchantStore();
 
-  const handleExit = () => {
-    clearMerchant();
-    resetFormalizationSteps();
-  };
-
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-gray-100">
-      <header className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="bg-emerald-100 p-2 rounded-lg">
-                <Store className="w-6 h-6 text-emerald-600" />
-              </div>
-              <div>
-                <h1 className="text-xl font-bold text-gray-900">
-                  Hi, {merchant?.name}
-                </h1>
-                <p className="text-sm text-gray-600">
-                  {merchant?.occupation} - {merchant?.district}
-                </p>
-              </div>
+    return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-gray-100 py-8">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Header */}
+        <div className="mb-8 animate-fadeInDown">
+          <div className="flex items-center gap-3">
+            <div className="bg-emerald-100 p-3 rounded-xl">
+              <span className="text-2xl">📊</span>
             </div>
-            <button
-              onClick={handleExit}
-              className="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
-            >
-              <LogOut className="w-4 h-4" />
-              <span className="text-sm font-medium">Cerrar sesión</span>
-            </button>
+            <div>
+              <h1 className="text-3xl md:text-4xl font-bold text-gray-900">
+                Hola, {merchant?.name}
+              </h1>
+              <p className="text-gray-600 mt-1">
+                {merchant?.occupation} - {merchant?.district}
+              </p>
+            </div>
           </div>
         </div>
-      </header>
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div className="space-y-8">
             <FormalizationSteps />
@@ -53,6 +35,16 @@ export const Dashboard = () => {
           </div>
         </div>
       </main>
+
+      <style>{`
+        @keyframes fadeInDown {
+          from { opacity: 0; transform: translateY(-20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fadeInDown {
+          animation: fadeInDown 0.5s ease-out;
+        }
+      `}</style>
     </div>
   );
 };
