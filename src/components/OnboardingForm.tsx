@@ -11,6 +11,11 @@ import {
 import { TextInput } from "./TextInput";
 import { SelectInput } from "./SelectInput";
 
+enum Steps {
+  StepPersonalInfo = 1,
+  StepBusiness = 2,
+}
+
 const DISTRICTS = [
   "Huancayo",
   "El Tambo",
@@ -45,7 +50,7 @@ const OnboardingForm = () => {
   const { errors, validate, clearError } = useFormValidation(merchantSchema);
   const step1Validator = useFormValidation(merchantStep1Schema);
   const step2Validator = useFormValidation(merchantStep2Schema);
-  const [currentStep, setCurrentStep] = useState(1);
+  const [currentStep, setCurrentStep] = useState<Steps>(Steps.StepPersonalInfo);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [formData, setFormData] = useState<MerchantFormData>({
@@ -63,23 +68,23 @@ const OnboardingForm = () => {
     }
   };
 
-  const handleNextStep = () => {
-    if (currentStep === 1) {
+  const handleNextStep = (step: Steps) => {
+    if (currentStep === step) {
       if (!step1Validator.validate(formData)) return;
     }
 
-    if (currentStep === 2) {
+    if (currentStep === step) {
       if (!step2Validator.validate(formData)) return;
     }
 
-    setCurrentStep((s) => s + 1);
+    setCurrentStep(step);
   };
 
-  const handlePrevStep = () => {
-    if (currentStep < 1) {
+  const handlePrevStep = (step: Steps) => {
+    if (currentStep === Steps.StepPersonalInfo) {
       return;
     }
-    setCurrentStep(currentStep - 1);
+    setCurrentStep(step);
   };
 
   const handleSubmit = async (e: FormEvent) => {
@@ -145,12 +150,12 @@ const OnboardingForm = () => {
               </div>
               <div className="relative z-10">
                 <h1 className="text-2xl md:text-3xl font-bold mb-2 animate-fadeInDown">
-                  {currentStep === 1 && "¡Cuéntanos sobre ti!"}
-                  {currentStep === 2 && "Información de tu negocio"}
+                  {currentStep === Steps.StepPersonalInfo && "¡Cuéntanos sobre ti!"}
+                  {currentStep === Steps.StepBusiness && "Información de tu negocio"}
                 </h1>
                 <p className="text-blue-100 text-sm md:text-base animate-fadeInDown animation-delay-100">
-                  {currentStep === 1 && "Completa tus datos personales"}
-                  {currentStep === 2 && "Ayúdanos a conocer tu negocio"}
+                  {currentStep === Steps.StepPersonalInfo && "Completa tus datos personales"}
+                  {currentStep === Steps.StepBusiness && "Ayúdanos a conocer tu negocio"}
                 </p>
               </div>
             </div>
@@ -158,7 +163,7 @@ const OnboardingForm = () => {
             {/* Content */}
             <div className="px-6 md:px-8 py-8 md:py-10 min-h-[400px]">
               {/* Step 1: Personal Info */}
-              {currentStep === 1 && (
+              {currentStep === Steps.StepPersonalInfo && (
                 <div className="space-y-6 animate-fadeInUp">
                   <TextInput
                     label="Nombre completo"
@@ -200,7 +205,7 @@ const OnboardingForm = () => {
               )}
 
               {/* Step 2: Business */}
-              {currentStep === 2 && (
+              {currentStep === Steps.StepBusiness && (
                 <div className="space-y-6 animate-fadeInUp">
                   <SelectInput
                     label="Rubro de negocio"
@@ -259,20 +264,20 @@ const OnboardingForm = () => {
 
             {/* Navigation Buttons */}
             <div className="px-6 md:px-8 py-6 md:py-8 bg-gray-50 flex gap-3 animate-slideUp">
-              {currentStep > 1 && (
+              {currentStep === Steps.StepBusiness && (
                 <button
                   type="button"
-                  onClick={handlePrevStep}
+                  onClick={() => handlePrevStep(Steps.StepPersonalInfo)}
                   disabled={isSubmitting}
                   className="flex-1 px-6 py-3 text-gray-700 font-semibold border-2 border-gray-300 rounded-xl hover:bg-gray-100 transition-all duration-200 transform hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   Atrás
                 </button>
               )}
-              {currentStep < 2 && (
+              {currentStep === Steps.StepPersonalInfo && (
                 <button
                   type="button"
-                  onClick={handleNextStep}
+                  onClick={() => handleNextStep(Steps.StepBusiness)}
                   disabled={isSubmitting}
                   className="flex-1 px-6 py-3 bg-gradient-to-r from-blue-600 to-teal-600 text-white font-semibold rounded-xl hover:shadow-lg transition-all duration-200 transform hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                 >
@@ -280,7 +285,7 @@ const OnboardingForm = () => {
                   <ChevronRight className="w-5 h-5" />
                 </button>
               )}
-              {currentStep === 2 && (
+              {currentStep === Steps.StepBusiness && (
                 <button
                   type="submit"
                   disabled={isSubmitting}
